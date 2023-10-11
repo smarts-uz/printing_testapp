@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
+import 'package:printing_testapp/preview_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -77,6 +78,39 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 child: const Text('Print'),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  final doc = pw.Document();
+
+                  doc.addPage(
+                    pw.Page(
+                      pageFormat: PdfPageFormat.a4,
+                      build: (pw.Context context) {
+                        return pw.Center(
+                          child: pw.Text('Hello World'),
+                        );
+                      },
+                    ),
+                  );
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PreviewScreen(doc: doc),
+                    ),
+                  );
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.black),
+                  foregroundColor: MaterialStateProperty.all(Colors.white),
+                  elevation: MaterialStateProperty.all(0),
+                  fixedSize: MaterialStateProperty.all(
+                    Size(MediaQuery.of(context).size.width, 50),
+                  ),
+                ),
+                child: const Text('Preview PDF'),
               ),
             ],
           ),
